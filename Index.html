@@ -1,0 +1,1416 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Depanjoy NEET Test</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f2f4f7;
+ color:#111;
+}
+button,input,textarea,select{font-family:Arial,sans-serif}
+button{cursor:pointer}
+.header{
+ background:#111;
+ color:#fff;
+ padding:20px 12px;
+ text-align:center;
+}
+.header h1{margin:0;font-size:23px}
+.header p{margin:6px 0 0;color:#bbb}
+.container{
+ max-width:700px;
+ margin:auto;
+ padding:15px;
+}
+.screen{display:none}
+.screen.active{display:block}
+.title{
+ font-size:22px;
+ font-weight:bold;
+ margin:8px 0 15px;
+}
+.card{
+ background:#fff;
+ border-radius:15px;
+ padding:18px;
+ margin-bottom:12px;
+}
+.empty{
+ text-align:center;
+ padding:35px 15px;
+}
+.empty div{font-size:50px}
+.primary{
+ width:100%;
+ padding:15px;
+ border:0;
+ border-radius:11px;
+ background:#111;
+ color:#fff;
+ font-size:16px;
+ font-weight:bold;
+}
+.secondary{
+ width:100%;
+ padding:14px;
+ border:0;
+ border-radius:11px;
+ background:#e5e7eb;
+ font-weight:bold;
+ margin-top:9px;
+}
+.danger{
+ background:#dc2626;
+ color:#fff;
+}
+.test{
+ background:#fff;
+ border-radius:14px;
+ padding:15px;
+ margin-bottom:10px;
+}
+.test h3{margin:0 0 7px}
+.test p{margin:5px 0;color:#666;font-size:14px}
+.test-buttons{
+ display:flex;
+ gap:7px;
+ margin-top:12px;
+}
+.test-buttons button{
+ flex:1;
+ border:0;
+ border-radius:9px;
+ padding:11px 5px;
+ font-weight:bold;
+}
+.start{background:#111;color:#fff}
+.edit{background:#e5e7eb}
+.del{background:#fee2e2;color:#991b1b}
+
+label{
+ display:block;
+ font-weight:bold;
+ margin:13px 0 6px;
+}
+input,textarea,select{
+ width:100%;
+ padding:13px;
+ border:1px solid #ccc;
+ border-radius:9px;
+ font-size:16px;
+}
+textarea{min-height:100px}
+.info{
+ background:#eff6ff;
+ color:#1e3a8a;
+ padding:12px;
+ border-radius:9px;
+ margin:12px 0;
+ font-size:13px;
+ line-height:1.5;
+}
+
+/* EXAM */
+.exambar{
+ background:#111;
+ color:#fff;
+ padding:10px;
+ position:sticky;
+ top:0;
+ z-index:10;
+}
+.examtop{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ gap:8px;
+}
+.examname{
+ font-size:14px;
+ font-weight:bold;
+}
+.timer{
+ background:#dc2626;
+ padding:8px 11px;
+ border-radius:8px;
+ font-weight:bold;
+ min-width:85px;
+ text-align:center;
+}
+.progress{
+ height:5px;
+ background:#444;
+ margin-top:8px;
+ border-radius:5px;
+ overflow:hidden;
+}
+.progressbar{
+ height:100%;
+ background:#22c55e;
+ width:0%;
+}
+.qcard{
+ background:#fff;
+ border-radius:14px;
+ padding:17px;
+ margin-top:12px;
+}
+.qnumber{
+ font-weight:bold;
+ color:#555;
+ margin-bottom:9px;
+}
+.subject{
+ display:inline-block;
+ background:#eee;
+ padding:5px 8px;
+ border-radius:6px;
+ font-size:12px;
+ font-weight:bold;
+ margin-bottom:10px;
+}
+.question{
+ font-size:18px;
+ line-height:1.5;
+ font-weight:bold;
+ white-space:pre-wrap;
+}
+.option{
+ display:block;
+ width:100%;
+ text-align:left;
+ background:#fff;
+ border:2px solid #ddd;
+ border-radius:10px;
+ padding:13px;
+ margin-top:10px;
+ font-size:16px;
+}
+.option.selected{
+ background:#e5e7eb;
+ border-color:#111;
+}
+.controls{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-top:10px;
+}
+.controls button{
+ border:0;
+ border-radius:9px;
+ padding:13px 5px;
+ font-weight:bold;
+}
+.prev{background:#e5e7eb}
+.next{background:#111;color:#fff}
+.clear{background:#fee2e2;color:#991b1b}
+.review{background:#fef3c7;color:#92400e}
+.submit{
+ grid-column:1/3;
+ background:#16a34a;
+ color:#fff;
+}
+.palettecard{
+ background:#fff;
+ border-radius:14px;
+ padding:14px;
+ margin-top:12px;
+}
+.palette{
+ display:grid;
+ grid-template-columns:repeat(10,1fr);
+ gap:5px;
+}
+.p{
+ height:34px;
+ border:1px solid #ccc;
+ border-radius:6px;
+ background:#fff;
+ font-size:12px;
+}
+.p.answered{
+ background:#22c55e;
+ color:#fff;
+ border-color:#16a34a;
+}
+.p.reviewed{
+ background:#facc15;
+ color:#111;
+ border-color:#eab308;
+}
+.p.current{
+ outline:3px solid #111;
+}
+.legend{
+ display:flex;
+ gap:12px;
+ flex-wrap:wrap;
+ margin-top:12px;
+ font-size:12px;
+}
+.dot{
+ display:inline-block;
+ width:12px;
+ height:12px;
+ border-radius:3px;
+ border:1px solid #aaa;
+}
+.green{background:#22c55e}
+.yellow{background:#facc15}
+.white{background:#fff}
+
+/* RESULT */
+.scorecard{
+ background:#fff;
+ border-radius:15px;
+ padding:22px;
+ text-align:center;
+}
+.score{
+ font-size:52px;
+ font-weight:bold;
+ margin:8px;
+}
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:7px;
+ margin-top:18px;
+}
+.box{
+ background:#f3f4f6;
+ padding:13px 3px;
+ border-radius:9px;
+}
+.box strong{
+ display:block;
+ font-size:22px;
+}
+.box small{color:#666}
+.subjectresult{
+ margin-top:15px;
+ text-align:left;
+}
+.subjectrow{
+ display:flex;
+ justify-content:space-between;
+ background:#f3f4f6;
+ padding:12px;
+ border-radius:8px;
+ margin-top:6px;
+}
+.reviewitem{
+ background:#fff;
+ border-radius:13px;
+ padding:15px;
+ margin-bottom:10px;
+}
+.correct{
+ background:#dcfce7;
+ color:#166534;
+ padding:8px;
+ border-radius:7px;
+ margin-top:6px;
+}
+.wrong{
+ background:#fee2e2;
+ color:#991b1b;
+ padding:8px;
+ border-radius:7px;
+ margin-top:6px;
+}
+.unattempted{
+ background:#f3f4f6;
+ padding:8px;
+ border-radius:7px;
+ margin-top:6px;
+}
+.small{
+ font-size:13px;
+ color:#666;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HOME -->
+<div id="home" class="screen active">
+ <div class="header">
+  <h1>DEPANJOY NEET TEST</h1>
+  <p>Personal Mock Test App</p>
+ </div>
+
+ <div class="container">
+  <div class="title">My Tests</div>
+  <div id="tests"></div>
+
+  <div id="empty" class="card empty">
+   <div>📚</div>
+   <h2>No Tests Added</h2>
+   <p>Create your first mock test.</p>
+  </div>
+
+  <button class="primary" onclick="newTest()">＋ ADD NEW TEST</button>
+ </div>
+</div>
+
+
+<!-- CREATE -->
+<div id="create" class="screen">
+ <div class="header">
+  <h1>CREATE TEST</h1>
+  <p>Set up your mock test</p>
+ </div>
+
+ <div class="container">
+  <div class="card">
+
+   <label>Test Name</label>
+   <input id="testName" placeholder="NEET Mock Test 1">
+
+   <label>Duration</label>
+   <input id="duration" type="number" value="180">
+
+   <label>Number of Questions</label>
+   <input id="totalQuestions" type="number" value="180">
+
+   <div class="info">
+    For a normal NEET-style full test, use 180 questions and 180 minutes.
+   </div>
+
+   <button class="primary" onclick="create()">CREATE TEST</button>
+   <button class="secondary" onclick="home()">← BACK</button>
+
+  </div>
+ </div>
+</div>
+
+
+<!-- ADD QUESTIONS -->
+<div id="builder" class="screen">
+ <div class="header">
+  <h1>ADD QUESTIONS</h1>
+  <p id="builderName"></p>
+ </div>
+
+ <div class="container">
+
+  <div class="card">
+   <b>Questions added: <span id="added">0</span></b>
+   <br><br>
+   <b>Target: <span id="target">180</span></b>
+  </div>
+
+  <div class="card">
+
+   <label>Subject</label>
+   <select id="subject">
+    <option>Physics</option>
+    <option>Chemistry</option>
+    <option>Biology</option>
+   </select>
+
+   <label>Question</label>
+   <textarea id="q" placeholder="Enter question"></textarea>
+
+   <label>Option A</label>
+   <input id="a" placeholder="Option A">
+
+   <label>Option B</label>
+   <input id="b" placeholder="Option B">
+
+   <label>Option C</label>
+   <input id="c" placeholder="Option C">
+
+   <label>Option D</label>
+   <input id="d" placeholder="Option D">
+
+   <label>Correct Answer</label>
+   <select id="answer">
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+    <option>D</option>
+   </select>
+
+   <button class="primary" style="margin-top:15px" onclick="addQuestion()">
+    💾 SAVE QUESTION
+   </button>
+
+  </div>
+
+  <div class="card">
+   <h3>Bulk Import</h3>
+
+   <div class="info">
+    You can also import many questions at once using a JSON file.
+   </div>
+
+   <input id="json" type="file" accept=".json">
+
+   <button class="primary" style="margin-top:10px" onclick="importQuestions()">
+    📥 IMPORT JSON
+   </button>
+  </div>
+
+  <div id="questionList"></div>
+
+  <button class="primary" onclick="finishTest()">
+   ✅ SAVE TEST
+  </button>
+
+  <button class="secondary" onclick="home()">
+   ← HOME
+  </button>
+
+ </div>
+</div>
+
+
+<!-- EXAM -->
+<div id="exam" class="screen">
+
+ <div class="exambar">
+  <div class="examtop">
+   <div class="examname" id="examName"></div>
+   <div class="timer" id="timer">180:00</div>
+  </div>
+
+  <div class="progress">
+   <div class="progressbar" id="progress"></div>
+  </div>
+ </div>
+
+ <div class="container">
+
+  <div class="qcard">
+
+   <div class="qnumber" id="qnumber"></div>
+
+   <div class="subject" id="examSubject"></div>
+
+   <div class="question" id="question"></div>
+
+   <button class="option" id="oa" onclick="choose('A')">
+    A. <span id="ta"></span>
+   </button>
+
+   <button class="option" id="ob" onclick="choose('B')">
+    B. <span id="tb"></span>
+   </button>
+
+   <button class="option" id="oc" onclick="choose('C')">
+    C. <span id="tc"></span>
+   </button>
+
+   <button class="option" id="od" onclick="choose('D')">
+    D. <span id="td"></span>
+   </button>
+
+  </div>
+
+  <div class="controls">
+   <button class="prev" onclick="previous()">◀ PREVIOUS</button>
+   <button class="next" onclick="next()">NEXT ▶</button>
+   <button class="clear" onclick="clearAnswer()">CLEAR RESPONSE</button>
+   <button class="review" onclick="markReview()">🔖 MARK REVIEW</button>
+   <button class="submit" onclick="submit(false)">🏁 SUBMIT TEST</button>
+  </div>
+
+  <div class="palettecard">
+   <b>QUESTION PALETTE</b>
+   <div class="palette" id="palette"></div>
+
+   <div class="legend">
+    <span><i class="dot green"></i> Answered</span>
+    <span><i class="dot yellow"></i> Review</span>
+    <span><i class="dot white"></i> Unanswered</span>
+   </div>
+  </div>
+
+ </div>
+</div>
+
+
+<!-- RESULT -->
+<div id="result" class="screen">
+
+ <div class="header">
+  <h1>TEST RESULT</h1>
+  <p id="resultName"></p>
+ </div>
+
+ <div class="container">
+
+  <div class="scorecard">
+
+   <div class="small">YOUR SCORE</div>
+   <div class="score" id="score">0</div>
+   <div class="small">OUT OF 720</div>
+
+   <div class="grid">
+    <div class="box">
+     <strong id="correct">0</strong>
+     <small>Correct</small>
+    </div>
+
+    <div class="box">
+     <strong id="wrong">0</strong>
+     <small>Wrong</small>
+    </div>
+
+    <div class="box">
+     <strong id="unattempted">0</strong>
+     <small>Unattempted</small>
+    </div>
+   </div>
+
+   <div class="subjectresult">
+    <h3>Subject Scores</h3>
+
+    <div class="subjectrow">
+     <span>Physics</span>
+     <b id="ps">0</b>
+    </div>
+
+    <div class="subjectrow">
+     <span>Chemistry</span>
+     <b id="cs">0</b>
+    </div>
+
+    <div class="subjectrow">
+     <span>Biology</span>
+     <b id="bs">0</b>
+    </div>
+   </div>
+
+   <button class="primary" style="margin-top:15px" onclick="showReview()">
+    📖 REVIEW ANSWERS
+   </button>
+
+   <button class="secondary" onclick="retake()">
+    🔄 RETAKE TEST
+   </button>
+
+   <button class="secondary" onclick="home()">
+    🏠 HOME
+   </button>
+
+  </div>
+
+ </div>
+</div>
+
+
+<!-- REVIEW -->
+<div id="reviewScreen" class="screen">
+
+ <div class="header">
+  <h1>ANSWER REVIEW</h1>
+  <p>Question-wise review</p>
+ </div>
+
+ <div class="container">
+
+  <div id="reviewList"></div>
+
+  <button class="primary" onclick="show('result')">
+   ← BACK TO RESULT
+  </button>
+
+ </div>
+</div>
+
+
+<script>
+
+/* =========================
+   APP DATA
+========================= */
+
+var tests = JSON.parse(
+ localStorage.getItem("depanjoyTests") || "[]"
+);
+
+var currentTest = null;
+var currentIndex = 0;
+var answers = [];
+var marked = [];
+var seconds = 0;
+var timerID = null;
+var finished = false;
+var lastResult = null;
+
+
+/* =========================
+   SCREEN
+========================= */
+
+function show(id){
+ var screens=document.querySelectorAll(".screen");
+
+ for(var i=0;i<screens.length;i++){
+  screens[i].classList.remove("active");
+ }
+
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+}
+
+function home(){
+ stopTimer();
+ currentTest=null;
+ renderHome();
+ show("home");
+}
+
+
+/* =========================
+   STORAGE
+========================= */
+
+function saveTests(){
+ localStorage.setItem(
+  "depanjoyTests",
+  JSON.stringify(tests)
+ );
+}
+
+
+/* =========================
+   HOME
+========================= */
+
+function renderHome(){
+
+ var box=document.getElementById("tests");
+ var empty=document.getElementById("empty");
+
+ box.innerHTML="";
+
+ if(tests.length===0){
+  empty.style.display="block";
+  return;
+ }
+
+ empty.style.display="none";
+
+ for(var i=0;i<tests.length;i++){
+
+  var t=tests[i];
+
+  var div=document.createElement("div");
+  div.className="test";
+
+  div.innerHTML=
+   "<h3>"+safe(t.name)+"</h3>"+
+   "<p>"+t.questions.length+
+   " questions • "+t.duration+
+   " minutes</p>"+
+   "<div class='test-buttons'>"+
+   "<button class='start' onclick='startTest("+i+")'>▶ START</button>"+
+   "<button class='edit' onclick='editTest("+i+")'>✏️ EDIT</button>"+
+   "<button class='del' onclick='deleteTest("+i+")'>DELETE</button>"+
+   "</div>";
+
+  box.appendChild(div);
+ }
+}
+
+function newTest(){
+ document.getElementById("testName").value="";
+ document.getElementById("duration").value=180;
+ document.getElementById("totalQuestions").value=180;
+ show("create");
+}
+
+
+/* =========================
+   CREATE
+========================= */
+
+function create(){
+
+ var name=document.getElementById("testName").value.trim();
+ var duration=parseInt(document.getElementById("duration").value);
+ var total=parseInt(document.getElementById("totalQuestions").value);
+
+ if(!name){
+  alert("Enter a test name.");
+  return;
+ }
+
+ if(!duration || duration<1){
+  alert("Enter a valid duration.");
+  return;
+ }
+
+ if(!total || total<1){
+  alert("Enter a valid question number.");
+  return;
+ }
+
+ currentTest={
+  id:Date.now(),
+  name:name,
+  duration:duration,
+  target:total,
+  questions:[]
+ };
+
+ tests.push(currentTest);
+ saveTests();
+
+ document.getElementById("builderName").textContent=name;
+ document.getElementById("target").textContent=total;
+
+ updateBuilder();
+ show("builder");
+}
+
+
+/* =========================
+   BUILDER
+========================= */
+
+function updateBuilder(){
+
+ document.getElementById("added").textContent=
+  currentTest.questions.length;
+
+ document.getElementById("target").textContent=
+  currentTest.target;
+
+ renderQuestionList();
+}
+
+function addQuestion(){
+
+ var q=document.getElementById("q").value.trim();
+ var a=document.getElementById("a").value.trim();
+ var b=document.getElementById("b").value.trim();
+ var c=document.getElementById("c").value.trim();
+ var d=document.getElementById("d").value.trim();
+
+ if(!q || !a || !b || !c || !d){
+  alert("Fill the question and all four options.");
+  return;
+ }
+
+ currentTest.questions.push({
+  subject:document.getElementById("subject").value,
+  question:q,
+  A:a,
+  B:b,
+  C:c,
+  D:d,
+  answer:document.getElementById("answer").value
+ });
+
+ saveTests();
+ clearForm();
+ updateBuilder();
+
+ alert(
+  "Question "+currentTest.questions.length+" saved."
+ );
+}
+
+function clearForm(){
+ document.getElementById("q").value="";
+ document.getElementById("a").value="";
+ document.getElementById("b").value="";
+ document.getElementById("c").value="";
+ document.getElementById("d").value="";
+ document.getElementById("answer").value="A";
+}
+
+function renderQuestionList(){
+
+ var box=document.getElementById("questionList");
+ box.innerHTML="";
+
+ for(var i=0;i<currentTest.questions.length;i++){
+
+  var div=document.createElement("div");
+  div.className="card";
+
+  div.innerHTML=
+   "<b>Question "+(i+1)+"</b>"+
+   "<br><span class='small'>"+
+   safe(currentTest.questions[i].subject)+
+   "</span>"+
+   "<br><button class='secondary' onclick='removeQuestion("+i+")'>DELETE</button>";
+
+  box.appendChild(div);
+ }
+}
+
+function removeQuestion(i){
+
+ if(!confirm("Delete Question "+(i+1)+"?")){
+  return;
+ }
+
+ currentTest.questions.splice(i,1);
+ saveTests();
+ updateBuilder();
+}
+
+function finishTest(){
+
+ if(currentTest.questions.length===0){
+  alert("Add at least one question.");
+  return;
+ }
+
+ saveTests();
+
+ alert("Test saved successfully.");
+ home();
+}
+
+
+/* =========================
+   JSON IMPORT
+========================= */
+
+function importQuestions(){
+
+ var file=document.getElementById("json").files[0];
+
+ if(!file){
+  alert("Select a JSON file first.");
+  return;
+ }
+
+ var reader=new FileReader();
+
+ reader.onload=function(e){
+
+  try{
+
+   var data=JSON.parse(e.target.result);
+
+   if(!Array.isArray(data)){
+    throw new Error();
+   }
+
+   var count=0;
+
+   for(var i=0;i<data.length;i++){
+
+    var x=data[i];
+
+    if(
+     x.question &&
+     x.A &&
+     x.B &&
+     x.C &&
+     x.D &&
+     x.answer
+    ){
+
+     currentTest.questions.push({
+      subject:x.subject || "Biology",
+      question:x.question,
+      A:x.A,
+      B:x.B,
+      C:x.C,
+      D:x.D,
+      answer:String(x.answer).toUpperCase()
+     });
+
+     count++;
+    }
+   }
+
+   saveTests();
+   updateBuilder();
+
+   alert(count+" questions imported.");
+
+  }catch(err){
+
+   alert(
+    "Import failed. Please check the JSON format."
+   );
+  }
+ };
+
+ reader.readAsText(file);
+}
+
+
+/* =========================
+   EDIT / DELETE
+========================= */
+
+function editTest(i){
+
+ currentTest=tests[i];
+
+ document.getElementById("builderName").textContent=
+  currentTest.name;
+
+ updateBuilder();
+ show("builder");
+}
+
+function deleteTest(i){
+
+ if(!confirm("Delete this test?")){
+  return;
+ }
+
+ tests.splice(i,1);
+ saveTests();
+ renderHome();
+}
+
+
+/* =========================
+   START EXAM
+========================= */
+
+function startTest(i){
+
+ currentTest=tests[i];
+
+ if(currentTest.questions.length===0){
+  alert("This test has no questions.");
+  return;
+ }
+
+ currentIndex=0;
+
+ answers=new Array(
+  currentTest.questions.length
+ ).fill(null);
+
+ marked=new Array(
+  currentTest.questions.length
+ ).fill(false);
+
+ seconds=currentTest.duration*60;
+ finished=false;
+
+ document.getElementById("examName").textContent=
+  currentTest.name;
+
+ show("exam");
+
+ renderQuestion();
+ startTimer();
+}
+
+
+/* =========================
+   TIMER
+========================= */
+
+function startTimer(){
+
+ stopTimer();
+ updateTimer();
+
+ timerID=setInterval(function(){
+
+  seconds--;
+
+  updateTimer();
+
+  if(seconds<=0){
+
+   seconds=0;
+   stopTimer();
+   submit(true);
+  }
+
+ },1000);
+}
+
+function stopTimer(){
+
+ if(timerID!==null){
+  clearInterval(timerID);
+  timerID=null;
+ }
+}
+
+function updateTimer(){
+
+ var m=Math.floor(seconds/60);
+ var s=seconds%60;
+
+ document.getElementById("timer").textContent=
+  String(m).padStart(2,"0")+":"+
+  String(s).padStart(2,"0");
+
+ if(seconds<=300){
+  document.getElementById("timer").style.background="#991b1b";
+ }else{
+  document.getElementById("timer").style.background="#dc2626";
+ }
+}
+
+
+/* =========================
+   QUESTION
+========================= */
+
+function renderQuestion(){
+
+ var q=currentTest.questions[currentIndex];
+ var total=currentTest.questions.length;
+
+ document.getElementById("qnumber").textContent=
+  "Question "+(currentIndex+1)+" of "+total;
+
+ document.getElementById("examSubject").textContent=
+  q.subject;
+
+ document.getElementById("question").textContent=
+  q.question;
+
+ document.getElementById("ta").textContent=q.A;
+ document.getElementById("tb").textContent=q.B;
+ document.getElementById("tc").textContent=q.C;
+ document.getElementById("td").textContent=q.D;
+
+ updateOptions();
+ updatePalette();
+
+ document.getElementById("progress").style.width=
+  (((currentIndex+1)/total)*100)+"%";
+
+ window.scrollTo(0,0);
+}
+
+function updateOptions(){
+
+ var letters=["A","B","C","D"];
+
+ for(var i=0;i<letters.length;i++){
+
+  var el=document.getElementById(
+   "o"+letters[i].toLowerCase()
+  );
+
+  el.classList.remove("selected");
+
+  if(answers[currentIndex]===letters[i]){
+   el.classList.add("selected");
+  }
+ }
+}
+
+function choose(letter){
+
+ if(finished)return;
+
+ answers[currentIndex]=letter;
+
+ marked[currentIndex]=false;
+
+ updateOptions();
+ updatePalette();
+}
+
+function clearAnswer(){
+
+ answers[currentIndex]=null;
+
+ updateOptions();
+ updatePalette();
+}
+
+function markReview(){
+
+ marked[currentIndex]=!marked[currentIndex];
+
+ updatePalette();
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function next(){
+
+ if(currentIndex<currentTest.questions.length-1){
+  currentIndex++;
+  renderQuestion();
+ }
+}
+
+function previous(){
+
+ if(currentIndex>0){
+  currentIndex--;
+  renderQuestion();
+ }
+}
+
+function goQuestion(i){
+ currentIndex=i;
+ renderQuestion();
+}
+
+
+/* =========================
+   PALETTE
+========================= */
+
+function updatePalette(){
+
+ var box=document.getElementById("palette");
+ box.innerHTML="";
+
+ for(var i=0;i<currentTest.questions.length;i++){
+
+  var b=document.createElement("button");
+  b.className="p";
+  b.textContent=i+1;
+
+  if(answers[i]){
+   b.classList.add("answered");
+  }
+
+  if(marked[i]){
+   b.classList.add("reviewed");
+  }
+
+  if(i===currentIndex){
+   b.classList.add("current");
+  }
+
+  b.onclick=(function(index){
+   return function(){
+    goQuestion(index);
+   };
+  })(i);
+
+  box.appendChild(b);
+ }
+}
+
+
+/* =========================
+   SUBMIT
+========================= */
+
+function submit(auto){
+
+ if(finished)return;
+
+ if(!auto){
+
+  var unanswered=0;
+
+  for(var i=0;i<answers.length;i++){
+   if(!answers[i])unanswered++;
+  }
+
+  if(!confirm(
+   "Submit test?\n\n"+
+   "Unanswered: "+unanswered
+  )){
+   return;
+  }
+ }
+
+ finished=true;
+ stopTimer();
+ calculateResult();
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+function calculateResult(){
+
+ var correct=0;
+ var wrong=0;
+ var unanswered=0;
+
+ var physics=0;
+ var chemistry=0;
+ var biology=0;
+
+ for(var i=0;i<currentTest.questions.length;i++){
+
+  var q=currentTest.questions[i];
+  var selected=answers[i];
+  var points=0;
+
+  if(!selected){
+
+   unanswered++;
+
+  }else if(
+   selected.toUpperCase()===
+   String(q.answer).toUpperCase()
+  ){
+
+   correct++;
+   points=4;
+
+  }else{
+
+   wrong++;
+   points=-1;
+  }
+
+  if(q.subject==="Physics"){
+   physics+=points;
+  }else if(q.subject==="Chemistry"){
+   chemistry+=points;
+  }else{
+   biology+=points;
+  }
+ }
+
+ var score=(correct*4)-wrong;
+
+ lastResult={
+  score:score,
+  correct:correct,
+  wrong:wrong,
+  unanswered:unanswered,
+  physics:physics,
+  chemistry:chemistry,
+  biology:biology
+ };
+
+ document.getElementById("resultName").textContent=
+  currentTest.name;
+
+ document.getElementById("score").textContent=score;
+ document.getElementById("correct").textContent=correct;
+ document.getElementById("wrong").textContent=wrong;
+ document.getElementById("unattempted").textContent=unanswered;
+
+ document.getElementById("ps").textContent=physics;
+ document.getElementById("cs").textContent=chemistry;
+ document.getElementById("bs").textContent=biology;
+
+ show("result");
+}
+
+
+/* =========================
+   REVIEW
+========================= */
+
+function showReview(){
+
+ var box=document.getElementById("reviewList");
+ box.innerHTML="";
+
+ for(var i=0;i<currentTest.questions.length;i++){
+
+  var q=currentTest.questions[i];
+  var selected=answers[i];
+
+  var div=document.createElement("div");
+  div.className="reviewitem";
+
+  var status;
+
+  if(!selected){
+
+   status=
+    "<div class='unattempted'>⚪ Unattempted</div>";
+
+  }else if(
+   selected.toUpperCase()===
+   String(q.answer).toUpperCase()
+  ){
+
+   status=
+    "<div class='correct'>✅ Correct</div>";
+
+  }else{
+
+   status=
+    "<div class='wrong'>❌ Wrong</div>";
+  }
+
+  div.innerHTML=
+   "<b>Q"+(i+1)+".</b> "+
+   safe(q.question)+
+   "<br><br>"+
+   "Your answer: <b>"+
+   (selected || "Not attempted")+
+   "</b>"+
+   "<br>"+
+   "Correct answer: <b>"+
+   safe(q.answer)+
+   "</b>"+
+   status;
+
+  box.appendChild(div);
+ }
+
+ show("reviewScreen");
+}
+
+
+/* =========================
+   RETAKE
+========================= */
+
+function retake(){
+
+ var index=-1;
+
+ for(var i=0;i<tests.length;i++){
+  if(tests[i].id===currentTest.id){
+   index=i;
+   break;
+  }
+ }
+
+ if(index>=0){
+  startTest(index);
+ }
+}
+
+
+/* =========================
+   SAFE TEXT
+========================= */
+
+function safe(text){
+
+ return String(text)
+  .replace(/&/g,"&amp;")
+  .replace(/</g,"&lt;")
+  .replace(/>/g,"&gt;")
+  .replace(/"/g,"&quot;")
+  .replace(/'/g,"&#039;");
+}
+
+
+/* =========================
+   START APP
+========================= */
+
+renderHome();
+
+</script>
+
+</body>
+</html>
